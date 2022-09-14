@@ -1,7 +1,9 @@
 package com.game.service;
 
+import com.game.dto.PlayerDto;
 import com.game.entity.Player;
 import com.game.repository.PlayerRepository;
+import com.game.service.converter.EntityConverter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.Nullable;
@@ -14,14 +16,23 @@ import java.util.Optional;
 public class PlayerService {
 
     private final PlayerRepository playerRepository;
+    private final EntityConverter entityConverter;
 
 
-    public PlayerService(PlayerRepository playerRepository) {
+    public PlayerService(PlayerRepository playerRepository, EntityConverter entityConverter) {
         this.playerRepository = playerRepository;
+        this.entityConverter = entityConverter;
     }
 
-    public void create(Player player) {
-        playerRepository.save(player);
+    public PlayerDto create(PlayerDto playerDto) {
+        int level = (int) ((Math.sqrt(2500 + 200 * playerDto.getExperience()) - 50) / 100);
+        playerDto.setLevel(level);
+        int untilNextLevel = 50 * (level + 1) * (level + 2) - playerDto.getExperience();
+        playerDto.setUntilNextLevel(untilNextLevel);
+        Player player = entityConverter.convert(playerDto);
+        Player savedPlayer = playerRepository.save(player);
+
+        return entityConverter.convert(savedPlayer);
     }
 
     public void delete(Long id) {
@@ -38,8 +49,8 @@ public class PlayerService {
         return optionalPlayer.orElse(null);
     }
 
-    public Long getPlayersCount() {
-        return playerRepository.count();
+    public Integer getPlayersCount() {
+        return (int) playerRepository.count();
     }
 
     public List<Player> getPlayers(int pageNumber, int pageSize) {
