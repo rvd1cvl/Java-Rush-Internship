@@ -4,6 +4,7 @@ import com.game.dto.PlayerDto;
 import com.game.entity.Player;
 import com.game.repository.PlayerRepository;
 import com.game.service.converter.EntityConverter;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.Nullable;
@@ -35,12 +36,22 @@ public class PlayerService {
         return entityConverter.convert(savedPlayer);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id) throws EmptyResultDataAccessException {
         playerRepository.deleteById(id);
     }
 
-    public void update(Player player) {
-        playerRepository.save(player);
+    @Nullable
+    public PlayerDto update(PlayerDto playerDto) {
+
+        if (get(playerDto.getId()) == null) {
+            return null;
+        }
+
+        Player player = entityConverter.convert(playerDto);
+        player.setId(playerDto.getId());
+        Player editedPlayer = playerRepository.save(player);
+
+        return entityConverter.convert(editedPlayer);
     }
 
     @Nullable
@@ -58,8 +69,4 @@ public class PlayerService {
 
         return page.toList();
     }
-
-
-
-
 }

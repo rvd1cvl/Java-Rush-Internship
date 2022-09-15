@@ -1,14 +1,19 @@
 package com.game.controller;
 
 import com.game.controller.requests.CreatePlayerRequest;
+import com.game.controller.requests.UpdatePlayerRequest;
 import com.game.controller.response.CreatePlayerResponse;
+import com.game.controller.response.UpdatePlayerResponse;
 import com.game.dto.PlayerDto;
 import com.game.entity.Player;
 import com.game.entity.Profession;
 import com.game.entity.Race;
 import com.game.service.PlayerService;
+import com.game.service.converter.EntityConverter;
 import com.game.service.converter.RequestConverter;
 import com.game.service.converter.ResponseConverter;
+import com.game.utils.CreatePlayerRequestValidator;
+import com.game.utils.UpdatePlayerRequestValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -77,12 +82,48 @@ public class PlayerController {
 
     @PostMapping("/rest/players")
     public ResponseEntity<CreatePlayerResponse> createNewPlayer(@RequestBody CreatePlayerRequest createPlayerRequest) {
-        PlayerDto playerDto = requestConverter.convert(createPlayerRequest);
+        CreatePlayerRequestValidator createPlayerResponseValidator = new CreatePlayerRequestValidator();
+        if (!createPlayerResponseValidator.validate(createPlayerRequest)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        PlayerDto playerDto = requestConverter.convertToPlayerDto(createPlayerRequest);
 
         PlayerDto savedPlayer = playerService.create(playerDto);
-        CreatePlayerResponse response = responseConverter.convert(savedPlayer);
+        CreatePlayerResponse response = responseConverter.convertToCreatePlayerResponse(savedPlayer);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @DeleteMapping("/rest/players/{id}")
+    public ResponseEntity deletePlayer(@PathVariable Long id) {
+        try {
+            playerService.delete(id);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/rest/players/{id}")
+    public ResponseEntity<UpdatePlayerResponse> updatePlayer(@RequestBody UpdatePlayerRequest updatePlayerRequest,
+                                                             @PathVariable Long id) {
+        UpdatePlayerRequestValidator updatePlayerRequestValidator = new UpdatePlayerRequestValidator();
+        if (!updatePlayerRequestValidator.validate(updatePlayerRequest)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        PlayerDto playerDto = requestConverter.convertToPlayerDto(updatePlayerRequest, id);
+
+        PlayerDto updatedPlayer = playerService.update(playerDto);
+        if (updatedPlayer == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        UpdatePlayerResponse response = responseConverter.convertToUpdatePlayerResponse(updatedPlayer);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+        //TODO : нужно убедиться в том, что изменения работают неправильно, реализовать метод get
+    }
 
 }

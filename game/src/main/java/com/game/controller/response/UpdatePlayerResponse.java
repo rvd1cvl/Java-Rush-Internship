@@ -1,39 +1,21 @@
-package com.game.entity;
+package com.game.controller.response;
 
-import javax.persistence.*;
-import java.util.Date;
+import com.game.entity.Profession;
+import com.game.entity.Race;
 
-@Entity
-@Table(name = "Player")
-public class Player {
-
-
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UpdatePlayerResponse {
     private Long id;
-
     private String name;
-
     private String title;
-
-    @Enumerated(EnumType.STRING)
-    private Profession profession;
-
-    @Enumerated(EnumType.STRING)
     private Race race;
-
-
-    private Date birthday;
-
-    @Column(name = "banned")
-    private Boolean isBanned;
-
+    private Profession profession;
+    private Long birthday;
+    private boolean isBanned;
     private Integer experience;
-
     private Integer level;
-
     private Integer untilNextLevel;
+
+    public UpdatePlayerResponse() {}
 
     public Long getId() {
         return id;
@@ -41,62 +23,6 @@ public class Player {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Profession getProfession() {
-        return profession;
-    }
-
-    public void setProfession(Profession profession) {
-        this.profession = profession;
-    }
-
-    public Race getRace() {
-        return race;
-    }
-
-    public void setRace(Race race) {
-        this.race = race;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public Boolean getBanned() {
-        return isBanned;
-    }
-
-    public void setBanned(Boolean banned) {
-        isBanned = banned;
-    }
-
-    public Integer getExperience() {
-        return experience;
-    }
-
-    public void setExperience(Integer experience) {
-        this.experience = experience;
     }
 
     public Integer getLevel() {
@@ -115,17 +41,70 @@ public class Player {
         this.untilNextLevel = untilNextLevel;
     }
 
-    public Player() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Race getRace() {
+        return race;
+    }
+
+    public void setRace(Race race) {
+        this.race = race;
+    }
+
+    public Profession getProfession() {
+        return profession;
+    }
+
+    public void setProfession(Profession profession) {
+        this.profession = profession;
+    }
+
+    public Long getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Long birthday) {
+        this.birthday = birthday;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(boolean banned) {
+        isBanned = banned;
+    }
+
+    public Integer getExperience() {
+        return experience;
+    }
+
+    public void setExperience(Integer experience) {
+        this.experience = experience;
     }
 
     @Override
     public String toString() {
-        return "Player{" +
+        return "UpdatePlayerResponse{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", title='" + title + '\'' +
-                ", profession=" + profession +
                 ", race=" + race +
+                ", profession=" + profession +
                 ", birthday=" + birthday +
                 ", isBanned=" + isBanned +
                 ", experience=" + experience +

@@ -1,30 +1,28 @@
-package com.game.dto;
+package com.game.controller.requests;
 
 import com.game.entity.Profession;
 import com.game.entity.Race;
 
-import java.util.Date;
-
-public class PlayerDto {
-    private Long id;
+public class UpdatePlayerRequest {
     private String name;
     private String title;
     private Race race;
     private Profession profession;
-    private Date birthday;
-    private Boolean banned = false;
+    private Long birthday;
+    private Boolean isBanned;
     private Integer experience;
-    private Integer level;
-    private Integer untilNextLevel;
 
-    public PlayerDto() {}
+    public UpdatePlayerRequest() {}
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public UpdatePlayerRequest(String name, String title, Race race, Profession profession, Long birthday,
+                               Boolean isBanned, Integer experience) {
+        this.name = name;
+        this.title = title;
+        this.race = race;
+        this.profession = profession;
+        this.birthday = birthday;
+        this.isBanned = isBanned;
+        this.experience = experience;
     }
 
     public String getName() {
@@ -33,22 +31,6 @@ public class PlayerDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
-
-    public Integer getUntilNextLevel() {
-        return untilNextLevel;
-    }
-
-    public void setUntilNextLevel(Integer untilNextLevel) {
-        this.untilNextLevel = untilNextLevel;
     }
 
     public String getTitle() {
@@ -75,20 +57,20 @@ public class PlayerDto {
         this.profession = profession;
     }
 
-    public Date getBirthday() {
+    public Long getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(Long birthday) {
         this.birthday = birthday;
     }
 
     public Boolean getBanned() {
-        return banned;
+        return isBanned;
     }
 
     public void setBanned(Boolean banned) {
-        this.banned = banned;
+        isBanned = banned;
     }
 
     public Integer getExperience() {
@@ -101,17 +83,14 @@ public class PlayerDto {
 
     @Override
     public String toString() {
-        return "PlayerDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+        return "UpdatePlayerRequest{" +
+                "name='" + name + '\'' +
                 ", title='" + title + '\'' +
                 ", race=" + race +
                 ", profession=" + profession +
                 ", birthday=" + birthday +
-                ", banned=" + banned +
+                ", isBanned=" + isBanned +
                 ", experience=" + experience +
-                ", level=" + level +
-                ", untilNextLevel=" + untilNextLevel +
                 '}';
     }
 }
