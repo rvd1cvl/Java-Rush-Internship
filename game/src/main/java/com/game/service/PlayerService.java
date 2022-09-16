@@ -1,5 +1,6 @@
 package com.game.service;
 
+import com.game.controller.filters.PlayerFilter;
 import com.game.dto.PlayerDto;
 import com.game.entity.Player;
 import com.game.repository.PlayerRepository;
@@ -26,10 +27,7 @@ public class PlayerService {
     }
 
     public PlayerDto create(PlayerDto playerDto) {
-        int level = (int) ((Math.sqrt(2500 + 200 * playerDto.getExperience()) - 50) / 100);
-        playerDto.setLevel(level);
-        int untilNextLevel = 50 * (level + 1) * (level + 2) - playerDto.getExperience();
-        playerDto.setUntilNextLevel(untilNextLevel);
+        setLevelParams(playerDto);
         Player player = entityConverter.convert(playerDto);
         Player savedPlayer = playerRepository.save(player);
 
@@ -42,10 +40,11 @@ public class PlayerService {
 
     @Nullable
     public PlayerDto update(PlayerDto playerDto) {
-
-        if (get(playerDto.getId()) == null) {
+        PlayerDto currentPlayer = get(playerDto.getId());
+        if (currentPlayer == null) {
             return null;
         }
+        setLevelParams(playerDto);
 
         Player player = entityConverter.convert(playerDto);
         player.setId(playerDto.getId());
@@ -54,19 +53,31 @@ public class PlayerService {
         return entityConverter.convert(editedPlayer);
     }
 
+    private void setLevelParams(PlayerDto playerDto) {
+        int level = (int) ((Math.sqrt(2500 + 200 * playerDto.getExperience()) - 50) / 100);
+        playerDto.setLevel(level);
+        int untilNextLevel = 50 * (level + 1) * (level + 2) - playerDto.getExperience();
+        playerDto.setUntilNextLevel(untilNextLevel);
+    }
+
     @Nullable
-    public Player get(Long id) {
+    public PlayerDto get(Long id) {
         Optional<Player> optionalPlayer = playerRepository.findById(id);
-        return optionalPlayer.orElse(null);
+        Player player = optionalPlayer.orElse(null);
+        if (player == null) {
+            return null;
+        }
+        return entityConverter.convert(player);
     }
 
     public Integer getPlayersCount() {
         return (int) playerRepository.count();
     }
 
-    public List<Player> getPlayers(int pageNumber, int pageSize) {
+    public List<Player> getPlayers(PlayerFilter filter) {
         Page<Player> page = playerRepository.findAll(PageRequest.of(pageNumber, pageSize));
 
         return page.toList();
     }
+
 }

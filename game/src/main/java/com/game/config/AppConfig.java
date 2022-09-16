@@ -1,5 +1,7 @@
 package com.game.config;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +17,9 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -26,6 +30,18 @@ import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.
 @ComponentScan("com.game")
 @EnableJpaRepositories(basePackages = "com.game.repository")
 public class AppConfig {
+
+    @Bean
+    public SessionFactory createSessionFactory(LocalContainerEntityManagerFactoryBean
+                                                       localContainerEntityManagerFactoryBean) {
+        EntityManager entityManager = localContainerEntityManagerFactoryBean.getNativeEntityManagerFactory().
+                createEntityManager();
+
+        Session session = entityManager.unwrap(org.hibernate.Session.class);
+        SessionFactory factory = session.getSessionFactory();
+        return factory;
+
+    }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {

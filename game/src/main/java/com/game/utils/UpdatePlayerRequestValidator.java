@@ -1,5 +1,6 @@
 package com.game.utils;
 
+import com.game.controller.requests.UpdatePlayerRequest;
 import com.game.controller.response.UpdatePlayerResponse;
 import org.springframework.util.StringUtils;
 
@@ -11,22 +12,22 @@ public class UpdatePlayerRequestValidator implements Validator {
             return false;
         }
 
-        UpdatePlayerResponse updatePlayerResponse = (UpdatePlayerResponse) o;
+        UpdatePlayerRequest updatePlayerRequest = (UpdatePlayerRequest) o;
 
 
-        if (updatePlayerResponse.getName() != null && updatePlayerResponse.getName().length() > 12) {
+        if (updatePlayerRequest.getName() != null && updatePlayerRequest.getName().length() > 12) {
             return false;
         }
 
-        if (updatePlayerResponse.getTitle() != null && updatePlayerResponse.getTitle().length() > 30) {
+        if (updatePlayerRequest.getTitle() != null && updatePlayerRequest.getTitle().length() > 30) {
             return false;
         }
 
-        if (updatePlayerResponse.getExperience() < 0 || updatePlayerResponse.getExperience() > 10000000) {
+        if (updatePlayerRequest.getExperience() < 0 || updatePlayerRequest.getExperience() > 10000000) {
             return false;
         }
 
-        if (updatePlayerResponse.getBirthday() < 0) {
+        if (updatePlayerRequest.getBirthday() < 0) {
             return false;
         }
         return true;
@@ -34,6 +35,6 @@ public class UpdatePlayerRequestValidator implements Validator {
 
     @Override
     public boolean isApplicable(Object o) {
-        return UpdatePlayerRequestValidator.class.equals(o.getClass());
+        return UpdatePlayerRequest.class.equals(o.getClass());
     }
 }

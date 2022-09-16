@@ -1,6 +1,7 @@
 package com.game.service.converter;
 
 import com.game.controller.response.CreatePlayerResponse;
+import com.game.controller.response.GetPlayerResponse;
 import com.game.controller.response.UpdatePlayerResponse;
 import com.game.dto.PlayerDto;
 import org.springframework.stereotype.Component;
@@ -34,5 +35,22 @@ public class ResponseConverter {
         updatePlayerResponse.setUntilNextLevel(playerDto.getUntilNextLevel());
 
         return updatePlayerResponse;
+    }
+
+    public GetPlayerResponse convertToGetPlayerResponse(PlayerDto playerDto) {
+        GetPlayerResponse getPlayerResponse = new GetPlayerResponse();
+
+        getPlayerResponse.setId(playerDto.getId());
+        getPlayerResponse.setName(playerDto.getName());
+        getPlayerResponse.setBirthday(playerDto.getBirthday().getTime());
+        getPlayerResponse.setBanned(playerDto.getBanned());
+        getPlayerResponse.setExperience(playerDto.getExperience());
+        getPlayerResponse.setRace(playerDto.getRace());
+        getPlayerResponse.setProfession(playerDto.getProfession());
+        getPlayerResponse.setTitle(playerDto.getTitle());
+        getPlayerResponse.setLevel(playerDto.getLevel());
+        getPlayerResponse.setUntilNextLevel(playerDto.getUntilNextLevel());
+
+        return getPlayerResponse;
     }
 }

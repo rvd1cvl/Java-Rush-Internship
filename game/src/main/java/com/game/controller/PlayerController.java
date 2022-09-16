@@ -1,8 +1,10 @@
 package com.game.controller;
 
+import com.game.controller.filters.PlayerFilter;
 import com.game.controller.requests.CreatePlayerRequest;
 import com.game.controller.requests.UpdatePlayerRequest;
 import com.game.controller.response.CreatePlayerResponse;
+import com.game.controller.response.GetPlayerResponse;
 import com.game.controller.response.UpdatePlayerResponse;
 import com.game.dto.PlayerDto;
 import com.game.entity.Player;
@@ -10,6 +12,7 @@ import com.game.entity.Profession;
 import com.game.entity.Race;
 import com.game.service.PlayerService;
 import com.game.service.converter.EntityConverter;
+import com.game.service.converter.FilterBuilder;
 import com.game.service.converter.RequestConverter;
 import com.game.service.converter.ResponseConverter;
 import com.game.utils.CreatePlayerRequestValidator;
@@ -26,12 +29,14 @@ public class PlayerController {
     private final PlayerService playerService;
     private final RequestConverter requestConverter;
     private final ResponseConverter responseConverter;
+    private final FilterBuilder filterBuilder;
 
     public PlayerController(PlayerService playerService, RequestConverter requestConverter,
-                            ResponseConverter responseConverter) {
+                            ResponseConverter responseConverter, FilterBuilder filterBuilder) {
         this.playerService = playerService;
         this.requestConverter = requestConverter;
         this.responseConverter = responseConverter;
+        this.filterBuilder = filterBuilder;
     }
 
 
@@ -51,14 +56,8 @@ public class PlayerController {
                                       @RequestParam(required = false) PlayerOrder order,
                                       @RequestParam(required = false) Integer pageNumber,
                                       @RequestParam(required = false) Integer pageSize) {
-        if (pageNumber == null) {
-            pageNumber = 0;
-        }
-
-        if (pageSize == null) {
-            pageSize = 3;
-        }
-
+        PlayerFilter filter = filterBuilder.createFilter(name, title, race, profession, after, before, banned,
+                minExperience, maxExperience, minLevel, maxLevel, order, pageNumber, pageSize);
         return playerService.getPlayers(pageNumber, pageSize);
     }
 
@@ -124,6 +123,18 @@ public class PlayerController {
         return new ResponseEntity<>(response, HttpStatus.OK);
 
         //TODO : нужно убедиться в том, что изменения работают неправильно, реализовать метод get
+    }
+
+    @GetMapping("/rest/players/{id}")
+    public ResponseEntity<GetPlayerResponse> getPlayer(@PathVariable Long id) {
+         PlayerDto player = playerService.get(id);
+         if (player == null) {
+             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         }
+
+         GetPlayerResponse response = responseConverter.convertToGetPlayerResponse(player);
+         return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
 }

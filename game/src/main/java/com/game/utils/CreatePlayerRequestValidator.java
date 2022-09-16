@@ -1,5 +1,6 @@
 package com.game.utils;
 
+import com.game.controller.requests.CreatePlayerRequest;
 import com.game.controller.response.CreatePlayerResponse;
 import org.springframework.util.StringUtils;
 
@@ -9,36 +10,36 @@ public class CreatePlayerRequestValidator implements Validator {
         if (!isApplicable(o)) {
             return false;
         }
-        CreatePlayerResponse createPlayerResponse = (CreatePlayerResponse) o;
-        if (StringUtils.isEmpty(createPlayerResponse.getName())) {
+        CreatePlayerRequest createPlayerRequest = (CreatePlayerRequest) o;
+        if (StringUtils.isEmpty(createPlayerRequest.getName())) {
             return false;
         }
 
-        if (createPlayerResponse.getName().length() > 12) {
+        if (createPlayerRequest.getName().length() > 12) {
             return false;
         }
 
-        if (createPlayerResponse.getTitle().length() > 30) {
+        if (createPlayerRequest.getTitle().length() > 30) {
             return false;
         }
 
-        if (createPlayerResponse.getExperience() < 0 || createPlayerResponse.getExperience() > 10000000) {
+        if (createPlayerRequest.getExperience() < 0 || createPlayerRequest.getExperience() > 10000000) {
             return false;
         }
 
-        if (StringUtils.isEmpty(createPlayerResponse.getTitle())) {
+        if (StringUtils.isEmpty(createPlayerRequest.getTitle())) {
             return false;
         }
 
-        if (createPlayerResponse.getRace() == null) {
+        if (createPlayerRequest.getRace() == null) {
             return false;
         }
 
-        if (createPlayerResponse.getProfession() == null) {
+        if (createPlayerRequest.getProfession() == null) {
             return false;
         }
 
-        if (createPlayerResponse.getBirthday() < 0) {
+        if (createPlayerRequest.getBirthday() < 0) {
             return false;
         }
 
@@ -48,7 +49,7 @@ public class CreatePlayerRequestValidator implements Validator {
     @Override
     public boolean isApplicable(Object o) {
 
-        return CreatePlayerRequestValidator.class.equals(o.getClass());
+        return CreatePlayerRequest.class.equals(o.getClass());
     }
 
 

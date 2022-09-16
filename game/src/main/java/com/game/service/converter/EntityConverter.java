@@ -25,6 +25,7 @@ public class EntityConverter {
 
     public PlayerDto convert (Player player) {
         PlayerDto playerDto = new PlayerDto();
+        playerDto.setId(player.getId());
         playerDto.setName(player.getName());
         playerDto.setBirthday(player.getBirthday());
         playerDto.setBanned(player.getBanned());
