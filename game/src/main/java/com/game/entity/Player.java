@@ -22,12 +22,8 @@ public class Player {
 
     @Enumerated(EnumType.STRING)
     private Race race;
-
-
     private Date birthday;
-
-    @Column(name = "banned")
-    private Boolean isBanned;
+    private Boolean banned;
 
     private Integer experience;
 
@@ -84,11 +80,11 @@ public class Player {
     }
 
     public Boolean getBanned() {
-        return isBanned;
+        return banned;
     }
 
     public void setBanned(Boolean banned) {
-        isBanned = banned;
+        banned = banned;
     }
 
     public Integer getExperience() {
@@ -127,7 +123,7 @@ public class Player {
                 ", profession=" + profession +
                 ", race=" + race +
                 ", birthday=" + birthday +
-                ", isBanned=" + isBanned +
+                ", isBanned=" + banned +
                 ", experience=" + experience +
                 ", level=" + level +
                 ", untilNextLevel=" + untilNextLevel +

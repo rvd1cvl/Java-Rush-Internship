@@ -9,19 +9,19 @@ public class UpdatePlayerRequest {
     private Race race;
     private Profession profession;
     private Long birthday;
-    private Boolean isBanned;
+    private Boolean banned;
     private Integer experience;
 
     public UpdatePlayerRequest() {}
 
     public UpdatePlayerRequest(String name, String title, Race race, Profession profession, Long birthday,
-                               Boolean isBanned, Integer experience) {
+                               Boolean banned, Integer experience) {
         this.name = name;
         this.title = title;
         this.race = race;
         this.profession = profession;
         this.birthday = birthday;
-        this.isBanned = isBanned;
+        this.banned = banned;
         this.experience = experience;
     }
 
@@ -66,11 +66,11 @@ public class UpdatePlayerRequest {
     }
 
     public Boolean getBanned() {
-        return isBanned;
+        return banned;
     }
 
     public void setBanned(Boolean banned) {
-        isBanned = banned;
+        this.banned = banned;
     }
 
     public Integer getExperience() {
@@ -89,7 +89,7 @@ public class UpdatePlayerRequest {
                 ", race=" + race +
                 ", profession=" + profession +
                 ", birthday=" + birthday +
-                ", isBanned=" + isBanned +
+                ", isBanned=" + banned +
                 ", experience=" + experience +
                 '}';
     }

@@ -4,6 +4,7 @@ import com.game.controller.filters.PlayerFilter;
 import com.game.dto.PlayerDto;
 import com.game.entity.Player;
 import com.game.repository.PlayerRepository;
+import com.game.repository.PlayersDao;
 import com.game.service.converter.EntityConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -19,11 +20,14 @@ public class PlayerService {
 
     private final PlayerRepository playerRepository;
     private final EntityConverter entityConverter;
+    private final PlayersDao playersDao;
 
 
-    public PlayerService(PlayerRepository playerRepository, EntityConverter entityConverter) {
+    public PlayerService(PlayerRepository playerRepository, EntityConverter entityConverter,
+                         PlayersDao playersDao) {
         this.playerRepository = playerRepository;
         this.entityConverter = entityConverter;
+        this.playersDao = playersDao;
     }
 
     public PlayerDto create(PlayerDto playerDto) {
@@ -75,9 +79,7 @@ public class PlayerService {
     }
 
     public List<Player> getPlayers(PlayerFilter filter) {
-        Page<Player> page = playerRepository.findAll(PageRequest.of(pageNumber, pageSize));
-
-        return page.toList();
+        return playersDao.getPlayers(filter);
     }
 
 }
