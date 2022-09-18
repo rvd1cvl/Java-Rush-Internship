@@ -17,6 +17,7 @@ import com.game.service.converter.FilterBuilder;
 import com.game.service.converter.RequestConverter;
 import com.game.service.converter.ResponseConverter;
 import com.game.utils.CreatePlayerRequestValidator;
+import com.game.utils.DeletePlayerRequestValidator;
 import com.game.utils.UpdatePlayerRequestValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,7 +78,9 @@ public class PlayerController {
                                    @RequestParam(required = false) PlayerOrder order,
                                    @RequestParam(required = false) Integer pageNumber,
                                    @RequestParam(required = false) Integer pageSize) {
-        return  playerService.getPlayersCount();
+        PlayerFilter filter = filterBuilder.createFilter(name, title, race, profession, after, before, banned,
+                minExperience, maxExperience, minLevel, maxLevel, order, pageNumber, pageSize);
+        return  playerService.getPlayersCount(filter);
     }
 
     @PostMapping("/rest/players")
@@ -96,6 +99,11 @@ public class PlayerController {
 
     @DeleteMapping("/rest/players/{id}")
     public ResponseEntity deletePlayer(@PathVariable Long id) {
+        DeletePlayerRequestValidator deletePlayerRequestValidator = new DeletePlayerRequestValidator();
+        boolean isValid = deletePlayerRequestValidator.validate(id);
+        if (!isValid) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         try {
             playerService.delete(id);
         } catch (Exception e) {
@@ -107,7 +115,7 @@ public class PlayerController {
     @PostMapping("/rest/players/{id}")
     public ResponseEntity<UpdatePlayerResponse> updatePlayer(@RequestBody UpdatePlayerRequest updatePlayerRequest,
                                                              @PathVariable Long id) {
-        UpdatePlayerRequestValidator updatePlayerRequestValidator = new UpdatePlayerRequestValidator();
+        UpdatePlayerRequestValidator updatePlayerRequestValidator = new UpdatePlayerRequestValidator(id);
         if (!updatePlayerRequestValidator.validate(updatePlayerRequest)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

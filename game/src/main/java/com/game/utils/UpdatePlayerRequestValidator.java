@@ -6,9 +6,18 @@ import org.springframework.util.StringUtils;
 
 public class UpdatePlayerRequestValidator implements Validator {
 
+    private final Long id;
+
+    public UpdatePlayerRequestValidator(Long id) {
+        this.id = id;
+    }
+
     @Override
     public boolean validate(Object o) {
         if (!isApplicable(o)) {
+            return false;
+        }
+        if (id < 0) {
             return false;
         }
 

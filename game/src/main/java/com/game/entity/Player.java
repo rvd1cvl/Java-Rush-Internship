@@ -84,7 +84,7 @@ public class Player {
     }
 
     public void setBanned(Boolean banned) {
-        banned = banned;
+        this.banned = banned;
     }
 
     public Integer getExperience() {

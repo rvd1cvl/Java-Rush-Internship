@@ -74,12 +74,13 @@ public class PlayerService {
         return entityConverter.convert(player);
     }
 
-    public Integer getPlayersCount() {
-        return (int) playerRepository.count();
+    public Integer getPlayersCount(PlayerFilter filter) {
+        return playersDao.getPlayers(filter, true).size();
+
     }
 
     public List<Player> getPlayers(PlayerFilter filter) {
-        return playersDao.getPlayers(filter);
+        return playersDao.getPlayers(filter, false);
     }
 
 }

@@ -16,7 +16,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -25,73 +28,89 @@ public class PlayersDao {
     private EntityManager entityManager;
 
     @Transactional
-    public List<Player> getPlayers(PlayerFilter filter) {
+    public List<Player> getPlayers(PlayerFilter filter, boolean forCounting) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Player> criteriaQuery = criteriaBuilder.createQuery(Player.class);
         Root<Player> root = criteriaQuery.from(Player.class);
-        criteriaQuery.select(root);
+        List<Predicate> predicates = new ArrayList<>();
 
         if (filter.getAfter() != null) {
-
-
+            //predicates.add(criteriaBuilder.gt(root.get("birthday"), filter.getAfter().getTime()));
+            if (filter.getBefore() != null) {
+                predicates.add(criteriaBuilder.between(root.get("birthday"), filter.getAfter(), filter.getBefore()));
+            } else {
+                predicates.add(criteriaBuilder.between(root.get("birthday"), filter.getAfter(), new Date()));
+            }
+        } else {
+            if (filter.getBefore() != null) {
+                predicates.add(criteriaBuilder.between(root.get("birthday"), new Date(0), filter.getBefore()));
+            }
         }
 
         if (filter.getBanned() != null) {
-            criteriaQuery.where(criteriaBuilder.equal(root.get("banned"), filter.getBanned()));
-
-        }
-
-        if (filter.getBefore() != null) {
+            predicates.add(criteriaBuilder.equal(root.get("banned"), filter.getBanned()));
 
         }
 
         if (filter.getName() != null) {
-            criteriaQuery.where(criteriaBuilder.equal(root.get("name"), filter.getName()));
+            predicates.add(criteriaBuilder.like(root.get("name"), "%" + filter.getName() + "%"));
         }
 
         if (filter.getProfession() != null) {
-            criteriaQuery.where(criteriaBuilder.equal(root.get("profession"), filter.getProfession()));
-
+           predicates.add(criteriaBuilder.equal(root.get("profession"), filter.getProfession()));
         }
 
         if (filter.getMaxExperience() != null) {
-
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("experience"), filter.getMaxExperience()));
         }
 
         if (filter.getMinExperience() != null) {
-
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("experience"), filter.getMinExperience()));
         }
 
         if (filter.getRace() != null) {
-            criteriaQuery.where(criteriaBuilder.equal(root.get("race"), filter.getRace()));
-
+            predicates.add(criteriaBuilder.equal(root.get("race"), filter.getRace()));
         }
 
         if (filter.getTitle() != null) {
-            criteriaQuery.where(criteriaBuilder.equal(root.get("title"), filter.getTitle()));
-
+            predicates.add(criteriaBuilder.like(root.get("title"), "%" +  filter.getTitle() +"%"));
         }
 
-        if (filter.getPageNumber() != null) {
-
+        if (filter.getMaxLevel() != null) {
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("level"), filter.getMaxLevel()));
         }
 
-        if (filter.getPageSize() != null) {
-
+        if (filter.getMinLevel() != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("level"), filter.getMinLevel()));
         }
 
-        if (filter.getOrder() != null) {
-            switch (filter.getOrder()) {
-                case ID:
-                    criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
-            }
-
-
+        switch (filter.getOrder()) {
+            case ID:
+                criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
+                break;
+            case NAME:
+                criteriaQuery.orderBy(criteriaBuilder.asc(root.get("name")));
+                break;
+            case LEVEL:
+                criteriaQuery.orderBy(criteriaBuilder.asc(root.get("level")));
+                break;
+            case BIRTHDAY:
+                criteriaQuery.orderBy(criteriaBuilder.asc(root.get("birthday")));
+                break;
+            case EXPERIENCE:
+                criteriaQuery.orderBy(criteriaBuilder.asc(root.get("experience")));
+                break;
         }
+
+        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
 
         Query query = entityManager.createQuery(criteriaQuery);
+        if (!forCounting) {
+            query.setMaxResults(filter.getPageSize());
+            query.setFirstResult(filter.getPageSize() * filter.getPageNumber());
+            //query.setFirstResult(0);
+        }
         List<Player> resultList = query.getResultList();
-
 
         return resultList;
     }
