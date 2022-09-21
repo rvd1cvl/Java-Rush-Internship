@@ -12,7 +12,7 @@ public class CreatePlayerResponse {
     private Profession profession;
     private Race race;
     private Long birthday;
-    private Boolean isBanned;
+    private Boolean banned;
     private Integer experience;
     private Integer level;
     private Integer untilNextLevel;
@@ -66,11 +66,11 @@ public class CreatePlayerResponse {
     }
 
     public Boolean getBanned() {
-        return isBanned;
+        return banned;
     }
 
     public void setBanned(Boolean banned) {
-        isBanned = banned;
+        this.banned = banned;
     }
 
     public Integer getExperience() {
@@ -109,7 +109,7 @@ public class CreatePlayerResponse {
                 ", profession=" + profession +
                 ", race=" + race +
                 ", birthday=" + birthday +
-                ", isBanned=" + isBanned +
+                ", isBanned=" + banned +
                 ", experience=" + experience +
                 ", level=" + level +
                 ", untilNextLevel=" + untilNextLevel +

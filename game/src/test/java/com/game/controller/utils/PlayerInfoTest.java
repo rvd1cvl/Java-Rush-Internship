@@ -1,7 +1,5 @@
 package com.game.controller.utils;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.game.entity.Profession;
 import com.game.entity.Race;
 
@@ -17,8 +15,6 @@ public class PlayerInfoTest {
     public Race race;
     public Profession profession;
     public Long birthday;
-    @JsonProperty("isBanned")
-    @JsonAlias("banned")
     public Boolean banned;
     public Integer experience;
     public Integer level;

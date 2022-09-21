@@ -10,7 +10,7 @@ public class GetPlayerResponse {
     private Race race;
     private Profession profession;
     private Long birthday;
-    private Boolean isBanned;
+    private Boolean banned;
     private Integer experience;
     private Integer level;
     private Integer untilNextLevel;
@@ -18,14 +18,14 @@ public class GetPlayerResponse {
     public GetPlayerResponse() {}
 
     public GetPlayerResponse(Long id, String name, String title, Race race, Profession profession, Long birthday,
-                             Boolean isBanned, Integer experience, Integer level, Integer untilNextLevel) {
+                             Boolean banned, Integer experience, Integer level, Integer untilNextLevel) {
         this.id = id;
         this.name = name;
         this.title = title;
         this.race = race;
         this.profession = profession;
         this.birthday = birthday;
-        this.isBanned = isBanned;
+        this.banned = banned;
         this.experience = experience;
         this.level = level;
         this.untilNextLevel = untilNextLevel;
@@ -80,11 +80,11 @@ public class GetPlayerResponse {
     }
 
     public Boolean getBanned() {
-        return isBanned;
+        return banned;
     }
 
     public void setBanned(Boolean banned) {
-        isBanned = banned;
+        this.banned = banned;
     }
 
     public Integer getExperience() {
@@ -120,7 +120,7 @@ public class GetPlayerResponse {
                 ", race=" + race +
                 ", profession=" + profession +
                 ", birthday=" + birthday +
-                ", isBanned=" + isBanned +
+                ", isBanned=" + banned +
                 ", experience=" + experience +
                 ", level=" + level +
                 ", untilNextLevel=" + untilNextLevel +
