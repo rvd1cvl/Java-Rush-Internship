@@ -4,6 +4,7 @@ import com.game.controller.filters.PlayerFilter;
 import com.game.controller.requests.CreatePlayerRequest;
 import com.game.controller.requests.UpdatePlayerRequest;
 import com.game.controller.response.CreatePlayerResponse;
+import com.game.controller.response.GetAllPlayersResponse;
 import com.game.controller.response.GetPlayerResponse;
 import com.game.controller.response.UpdatePlayerResponse;
 import com.game.dto.PlayerDto;
@@ -42,26 +43,25 @@ public class PlayerController {
         this.filterBuilder = filterBuilder;
     }
 
-
-
     @GetMapping(path = "/rest/players")
-    public List<Player> getAllPlayers(@RequestParam(required = false) String name,
-                                      @RequestParam(required = false) String title,
-                                      @RequestParam(required = false) Race race,
-                                      @RequestParam(required = false) Profession profession,
-                                      @RequestParam(required = false) Long after,
-                                      @RequestParam(required = false) Long before,
-                                      @RequestParam(required = false) Boolean banned,
-                                      @RequestParam(required = false) Integer minExperience,
-                                      @RequestParam(required = false) Integer maxExperience,
-                                      @RequestParam(required = false) Integer minLevel,
-                                      @RequestParam(required = false) Integer maxLevel,
-                                      @RequestParam(required = false) PlayerOrder order,
-                                      @RequestParam(required = false) Integer pageNumber,
-                                      @RequestParam(required = false) Integer pageSize) {
+    public ResponseEntity<GetAllPlayersResponse> getAllPlayers(@RequestParam(required = false) String name,
+                                                               @RequestParam(required = false) String title,
+                                                               @RequestParam(required = false) Race race,
+                                                               @RequestParam(required = false) Profession profession,
+                                                               @RequestParam(required = false) Long after,
+                                                               @RequestParam(required = false) Long before,
+                                                               @RequestParam(required = false) Boolean banned,
+                                                               @RequestParam(required = false) Integer minExperience,
+                                                               @RequestParam(required = false) Integer maxExperience,
+                                                               @RequestParam(required = false) Integer minLevel,
+                                                               @RequestParam(required = false) Integer maxLevel,
+                                                               @RequestParam(required = false) PlayerOrder order,
+                                                               @RequestParam(required = false) Integer pageNumber,
+                                                               @RequestParam(required = false) Integer pageSize) {
         PlayerFilter filter = filterBuilder.createFilter(name, title, race, profession, after, before, banned,
                 minExperience, maxExperience, minLevel, maxLevel, order, pageNumber, pageSize);
-        return playerService.getPlayers(filter);
+        List<PlayerDto> playerDtoList = playerService.getPlayers(filter);
+        return new ResponseEntity<>(responseConverter.convertToGetAllPlayersResponse(playerDtoList), HttpStatus.OK);
     }
 
     @GetMapping("/rest/players/count")

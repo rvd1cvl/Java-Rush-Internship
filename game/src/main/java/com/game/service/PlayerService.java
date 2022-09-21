@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PlayerService {
@@ -90,8 +91,11 @@ public class PlayerService {
 
     }
 
-    public List<Player> getPlayers(PlayerFilter filter) {
-        return playersDao.getPlayers(filter, false);
+    public List<PlayerDto> getPlayers(PlayerFilter filter) {
+        List<Player> players = playersDao.getPlayers(filter, false);
+        List<PlayerDto> result = players.stream().map(entityConverter::convert).collect(Collectors.toList());
+
+        return result;
     }
 
 }

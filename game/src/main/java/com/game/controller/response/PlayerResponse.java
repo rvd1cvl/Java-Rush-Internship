@@ -3,33 +3,19 @@ package com.game.controller.response;
 import com.game.entity.Profession;
 import com.game.entity.Race;
 
-public class GetPlayerResponse {
+import java.util.Date;
+
+public class PlayerResponse {
     private Long id;
     private String name;
     private String title;
     private Race race;
     private Profession profession;
-    private Long birthday;
-    private Boolean banned;
+    private Date birthday;
+    private Boolean banned = false;
     private Integer experience;
     private Integer level;
     private Integer untilNextLevel;
-
-    public GetPlayerResponse() {}
-
-    public GetPlayerResponse(Long id, String name, String title, Race race, Profession profession, Long birthday,
-                             Boolean banned, Integer experience, Integer level, Integer untilNextLevel) {
-        this.id = id;
-        this.name = name;
-        this.title = title;
-        this.race = race;
-        this.profession = profession;
-        this.birthday = birthday;
-        this.banned = banned;
-        this.experience = experience;
-        this.level = level;
-        this.untilNextLevel = untilNextLevel;
-    }
 
     public Long getId() {
         return id;
@@ -71,11 +57,11 @@ public class GetPlayerResponse {
         this.profession = profession;
     }
 
-    public Long getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Long birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
@@ -113,14 +99,14 @@ public class GetPlayerResponse {
 
     @Override
     public String toString() {
-        return "{" +
+        return "PlayerResponse{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", title='" + title + '\'' +
                 ", race=" + race +
                 ", profession=" + profession +
                 ", birthday=" + birthday +
-                ", isBanned=" + banned +
+                ", banned=" + banned +
                 ", experience=" + experience +
                 ", level=" + level +
                 ", untilNextLevel=" + untilNextLevel +

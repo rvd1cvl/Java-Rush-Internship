@@ -1,10 +1,11 @@
 package com.game.service.converter;
 
-import com.game.controller.response.CreatePlayerResponse;
-import com.game.controller.response.GetPlayerResponse;
-import com.game.controller.response.UpdatePlayerResponse;
+import com.game.controller.response.*;
 import com.game.dto.PlayerDto;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ResponseConverter {
@@ -55,5 +56,13 @@ public class ResponseConverter {
         getPlayerResponse.setUntilNextLevel(playerDto.getUntilNextLevel());
 
         return getPlayerResponse;
+    }
+
+    public GetAllPlayersResponse convertToGetAllPlayersResponse(List<PlayerDto> players) {
+        List<GetPlayerResponse> result = players.stream().map(this::convertToGetPlayerResponse).collect(Collectors.toList());
+        GetAllPlayersResponse getAllPlayersResponse = new GetAllPlayersResponse();
+        getAllPlayersResponse.setGetPlayerResponseList(result);
+
+        return getAllPlayersResponse;
     }
 }
