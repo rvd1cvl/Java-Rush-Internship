@@ -26,7 +26,7 @@ public class RequestConverter {
         PlayerDto playerDto = new PlayerDto();
         playerDto.setId(id);
         playerDto.setName(updatePlayerRequest.getName());
-        playerDto.setBirthday(new Date(updatePlayerRequest.getBirthday()));
+        playerDto.setBirthday(updatePlayerRequest.getBirthday() == null ? null : new Date(updatePlayerRequest.getBirthday()));
         playerDto.setBanned(updatePlayerRequest.getBanned());
         playerDto.setExperience(updatePlayerRequest.getExperience());
         playerDto.setRace(updatePlayerRequest.getRace());

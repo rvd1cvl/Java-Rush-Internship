@@ -12,6 +12,8 @@ public class UpdatePlayerRequest {
     private Boolean banned;
     private Integer experience;
 
+    private Integer level;
+
     public UpdatePlayerRequest() {}
 
     public UpdatePlayerRequest(String name, String title, Race race, Profession profession, Long birthday,
@@ -23,6 +25,7 @@ public class UpdatePlayerRequest {
         this.birthday = birthday;
         this.banned = banned;
         this.experience = experience;
+        this.level = level;
     }
 
     public String getName() {
@@ -31,6 +34,14 @@ public class UpdatePlayerRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public String getTitle() {

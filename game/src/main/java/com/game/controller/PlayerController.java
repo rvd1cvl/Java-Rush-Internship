@@ -18,6 +18,7 @@ import com.game.service.converter.RequestConverter;
 import com.game.service.converter.ResponseConverter;
 import com.game.utils.CreatePlayerRequestValidator;
 import com.game.utils.DeletePlayerRequestValidator;
+import com.game.utils.GetPlayerValidator;
 import com.game.utils.UpdatePlayerRequestValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -136,6 +137,10 @@ public class PlayerController {
 
     @GetMapping("/rest/players/{id}")
     public ResponseEntity<GetPlayerResponse> getPlayer(@PathVariable Long id) {
+        GetPlayerValidator getPlayerValidator = new GetPlayerValidator();
+        if (!getPlayerValidator.validate(id)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
          PlayerDto player = playerService.get(id);
          if (player == null) {
              return new ResponseEntity<>(HttpStatus.NOT_FOUND);

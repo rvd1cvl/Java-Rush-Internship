@@ -2,6 +2,8 @@ package com.game.utils;
 
 import com.game.controller.requests.UpdatePlayerRequest;
 import com.game.controller.response.UpdatePlayerResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 
 public class UpdatePlayerRequestValidator implements Validator {
@@ -17,12 +19,18 @@ public class UpdatePlayerRequestValidator implements Validator {
         if (!isApplicable(o)) {
             return false;
         }
-        if (id < 0) {
+        if (id <= 0) {
             return false;
         }
 
         UpdatePlayerRequest updatePlayerRequest = (UpdatePlayerRequest) o;
 
+        if (updatePlayerRequest.getName() == null && updatePlayerRequest.getTitle() == null
+                && updatePlayerRequest.getProfession() == null && updatePlayerRequest.getBanned() == null
+                && updatePlayerRequest.getExperience() == null && updatePlayerRequest.getLevel() == null
+                && updatePlayerRequest.getBirthday() == null && updatePlayerRequest.getRace() == null) {
+            return true;
+        }
 
         if (updatePlayerRequest.getName() != null && updatePlayerRequest.getName().length() > 12) {
             return false;
@@ -32,11 +40,11 @@ public class UpdatePlayerRequestValidator implements Validator {
             return false;
         }
 
-        if (updatePlayerRequest.getExperience() < 0 || updatePlayerRequest.getExperience() > 10000000) {
+        if (updatePlayerRequest.getExperience() != null && (updatePlayerRequest.getExperience() < 0 || updatePlayerRequest.getExperience() > 10000000)) {
             return false;
         }
 
-        if (updatePlayerRequest.getBirthday() < 0) {
+        if (updatePlayerRequest.getBirthday() != null && updatePlayerRequest.getBirthday() < 0) {
             return false;
         }
         return true;

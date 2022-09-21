@@ -1,5 +1,6 @@
 package com.game.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.game.entity.Profession;
 import com.game.entity.Race;
 

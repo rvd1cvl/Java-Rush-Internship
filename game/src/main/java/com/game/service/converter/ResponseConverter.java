@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class ResponseConverter {
     public CreatePlayerResponse convertToCreatePlayerResponse(PlayerDto playerDto) {
         CreatePlayerResponse createPlayerResponse = new CreatePlayerResponse();
+        createPlayerResponse.setId(playerDto.getId());
         createPlayerResponse.setName(playerDto.getName());
         createPlayerResponse.setBirthday(playerDto.getBirthday().getTime());
         createPlayerResponse.setBanned(playerDto.getBanned());
@@ -17,6 +18,8 @@ public class ResponseConverter {
         createPlayerResponse.setRace(playerDto.getRace());
         createPlayerResponse.setProfession(playerDto.getProfession());
         createPlayerResponse.setTitle(playerDto.getTitle());
+        createPlayerResponse.setLevel(playerDto.getLevel());
+        createPlayerResponse.setUntilNextLevel(playerDto.getUntilNextLevel());
 
         return createPlayerResponse;
     }

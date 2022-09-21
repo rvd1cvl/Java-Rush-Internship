@@ -39,4 +39,19 @@ public class EntityConverter {
 
         return playerDto;
     }
+
+    public Player convertForUpdating (PlayerDto playerToUpdate, PlayerDto playerDto) {
+        Player updatedPlayer = new Player();
+        updatedPlayer.setLevel(playerDto.getLevel() == null ? playerToUpdate.getLevel() : playerDto.getLevel());
+        updatedPlayer.setName(playerDto.getName() == null ? playerToUpdate.getName() : playerDto.getName());
+        updatedPlayer.setTitle(playerDto.getTitle() == null ? playerToUpdate.getTitle() : playerDto.getTitle());
+        updatedPlayer.setRace(playerDto.getRace() == null ? playerToUpdate.getRace() : playerDto.getRace());
+        updatedPlayer.setProfession(playerDto.getProfession() == null ? playerToUpdate.getProfession() : playerDto.getProfession());
+        updatedPlayer.setExperience(playerDto.getExperience() == null ? playerToUpdate.getExperience() : playerDto.getExperience());
+        updatedPlayer.setUntilNextLevel(playerDto.getUntilNextLevel() == null ? playerToUpdate.getUntilNextLevel() : playerDto.getUntilNextLevel());
+        updatedPlayer.setBanned(playerDto.getBanned() == null ? playerToUpdate.getBanned() : playerDto.getBanned());
+        updatedPlayer.setBirthday(playerDto.getBirthday() == null ? playerToUpdate.getBirthday() : playerDto.getBirthday());
+
+        return updatedPlayer;
+    }
 }

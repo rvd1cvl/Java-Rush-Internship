@@ -1,6 +1,7 @@
 package com.game.utils;
 
-public class DeletePlayerRequestValidator implements Validator {
+public class GetPlayerValidator implements Validator {
+
     @Override
     public boolean validate(Object o) {
         if (!isApplicable(o)) {

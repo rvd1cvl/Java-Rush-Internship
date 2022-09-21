@@ -9,6 +9,8 @@ import com.game.service.converter.EntityConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
@@ -48,9 +50,15 @@ public class PlayerService {
         if (currentPlayer == null) {
             return null;
         }
+        if (playerDto.getName() == null && playerDto.getTitle() == null
+                && playerDto.getProfession() == null && playerDto.getBanned() == null
+                && playerDto.getExperience() == null && playerDto.getLevel() == null
+                && playerDto.getBirthday() == null && playerDto.getRace() == null) {
+            return currentPlayer;
+        }
         setLevelParams(playerDto);
 
-        Player player = entityConverter.convert(playerDto);
+        Player player = entityConverter.convertForUpdating(currentPlayer, playerDto);
         player.setId(playerDto.getId());
         Player editedPlayer = playerRepository.save(player);
 
@@ -58,6 +66,9 @@ public class PlayerService {
     }
 
     private void setLevelParams(PlayerDto playerDto) {
+        if (playerDto.getExperience() == null) {
+            return;
+        }
         int level = (int) ((Math.sqrt(2500 + 200 * playerDto.getExperience()) - 50) / 100);
         playerDto.setLevel(level);
         int untilNextLevel = 50 * (level + 1) * (level + 2) - playerDto.getExperience();
