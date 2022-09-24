@@ -6,10 +6,12 @@ public class DeletePlayerRequestValidator implements Validator {
         if (!isApplicable(o)) {
             return false;
         }
+
         Long id = (Long) o;
         if (id <= 0) {
             return false;
         }
+
         return true;
     }
 

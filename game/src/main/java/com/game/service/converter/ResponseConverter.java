@@ -11,32 +11,16 @@ import java.util.stream.Collectors;
 public class ResponseConverter {
     public CreatePlayerResponse convertToCreatePlayerResponse(PlayerDto playerDto) {
         CreatePlayerResponse createPlayerResponse = new CreatePlayerResponse();
-        createPlayerResponse.setId(playerDto.getId());
-        createPlayerResponse.setName(playerDto.getName());
-        createPlayerResponse.setBirthday(playerDto.getBirthday().getTime());
-        createPlayerResponse.setBanned(playerDto.getBanned());
-        createPlayerResponse.setExperience(playerDto.getExperience());
-        createPlayerResponse.setRace(playerDto.getRace());
-        createPlayerResponse.setProfession(playerDto.getProfession());
-        createPlayerResponse.setTitle(playerDto.getTitle());
-        createPlayerResponse.setLevel(playerDto.getLevel());
-        createPlayerResponse.setUntilNextLevel(playerDto.getUntilNextLevel());
+
+        applyFields(createPlayerResponse, playerDto);
 
         return createPlayerResponse;
     }
 
     public UpdatePlayerResponse convertToUpdatePlayerResponse(PlayerDto playerDto) {
         UpdatePlayerResponse updatePlayerResponse = new UpdatePlayerResponse();
-        updatePlayerResponse.setId(playerDto.getId());
-        updatePlayerResponse.setName(playerDto.getName());
-        updatePlayerResponse.setBirthday(playerDto.getBirthday().getTime());
-        updatePlayerResponse.setBanned(playerDto.getBanned());
-        updatePlayerResponse.setExperience(playerDto.getExperience());
-        updatePlayerResponse.setRace(playerDto.getRace());
-        updatePlayerResponse.setProfession(playerDto.getProfession());
-        updatePlayerResponse.setTitle(playerDto.getTitle());
-        updatePlayerResponse.setLevel(playerDto.getLevel());
-        updatePlayerResponse.setUntilNextLevel(playerDto.getUntilNextLevel());
+
+        applyFields(updatePlayerResponse, playerDto);
 
         return updatePlayerResponse;
     }
@@ -44,25 +28,24 @@ public class ResponseConverter {
     public GetPlayerResponse convertToGetPlayerResponse(PlayerDto playerDto) {
         GetPlayerResponse getPlayerResponse = new GetPlayerResponse();
 
-        getPlayerResponse.setId(playerDto.getId());
-        getPlayerResponse.setName(playerDto.getName());
-        getPlayerResponse.setBirthday(playerDto.getBirthday().getTime());
-        getPlayerResponse.setBanned(playerDto.getBanned());
-        getPlayerResponse.setExperience(playerDto.getExperience());
-        getPlayerResponse.setRace(playerDto.getRace());
-        getPlayerResponse.setProfession(playerDto.getProfession());
-        getPlayerResponse.setTitle(playerDto.getTitle());
-        getPlayerResponse.setLevel(playerDto.getLevel());
-        getPlayerResponse.setUntilNextLevel(playerDto.getUntilNextLevel());
-
+        applyFields(getPlayerResponse, playerDto);
         return getPlayerResponse;
     }
 
-    public GetAllPlayersResponse convertToGetAllPlayersResponse(List<PlayerDto> players) {
-        List<GetPlayerResponse> result = players.stream().map(this::convertToGetPlayerResponse).collect(Collectors.toList());
-        GetAllPlayersResponse getAllPlayersResponse = new GetAllPlayersResponse();
-        getAllPlayersResponse.setGetPlayerResponseList(result);
+    public List<GetPlayerResponse> convertToGetAllPlayersResponse(List<PlayerDto> players) {
+        return players.stream().map(this::convertToGetPlayerResponse).collect(Collectors.toList());
+    }
 
-        return getAllPlayersResponse;
+    private void applyFields(AbstractResponse abstractResponse, PlayerDto playerDto) {
+        abstractResponse.setId(playerDto.getId());
+        abstractResponse.setName(playerDto.getName());
+        abstractResponse.setBirthday(playerDto.getBirthday().getTime());
+        abstractResponse.setBanned(playerDto.getBanned());
+        abstractResponse.setExperience(playerDto.getExperience());
+        abstractResponse.setRace(playerDto.getRace());
+        abstractResponse.setProfession(playerDto.getProfession());
+        abstractResponse.setTitle(playerDto.getTitle());
+        abstractResponse.setLevel(playerDto.getLevel());
+        abstractResponse.setUntilNextLevel(playerDto.getUntilNextLevel());
     }
 }

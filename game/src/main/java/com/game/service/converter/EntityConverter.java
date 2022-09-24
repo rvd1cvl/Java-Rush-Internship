@@ -1,6 +1,5 @@
 package com.game.service.converter;
 
-import com.game.controller.requests.CreatePlayerRequest;
 import com.game.dto.PlayerDto;
 import com.game.entity.Player;
 import org.springframework.stereotype.Component;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class EntityConverter {
     public Player convert (PlayerDto playerDto) {
         Player player = new Player();
+
         player.setName(playerDto.getName());
         player.setBirthday(playerDto.getBirthday());
         player.setBanned(playerDto.getBanned());
@@ -25,6 +25,7 @@ public class EntityConverter {
 
     public PlayerDto convert (Player player) {
         PlayerDto playerDto = new PlayerDto();
+
         playerDto.setId(player.getId());
         playerDto.setName(player.getName());
         playerDto.setBirthday(player.getBirthday());
@@ -42,6 +43,7 @@ public class EntityConverter {
 
     public Player convertForUpdating (PlayerDto playerToUpdate, PlayerDto playerDto) {
         Player updatedPlayer = new Player();
+
         updatedPlayer.setLevel(playerDto.getLevel() == null ? playerToUpdate.getLevel() : playerDto.getLevel());
         updatedPlayer.setName(playerDto.getName() == null ? playerToUpdate.getName() : playerDto.getName());
         updatedPlayer.setTitle(playerDto.getTitle() == null ? playerToUpdate.getTitle() : playerDto.getTitle());

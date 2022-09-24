@@ -1,7 +1,6 @@
 package com.game.utils;
 
 import com.game.controller.requests.CreatePlayerRequest;
-import com.game.controller.response.CreatePlayerResponse;
 import org.springframework.util.StringUtils;
 
 public class CreatePlayerRequestValidator implements Validator {
@@ -10,6 +9,7 @@ public class CreatePlayerRequestValidator implements Validator {
         if (!isApplicable(o)) {
             return false;
         }
+
         CreatePlayerRequest createPlayerRequest = (CreatePlayerRequest) o;
         if (StringUtils.isEmpty(createPlayerRequest.getName())) {
             return false;
@@ -48,9 +48,6 @@ public class CreatePlayerRequestValidator implements Validator {
 
     @Override
     public boolean isApplicable(Object o) {
-
         return CreatePlayerRequest.class.equals(o.getClass());
     }
-
-
 }

@@ -7,10 +7,6 @@ import com.game.repository.PlayerRepository;
 import com.game.repository.PlayersDao;
 import com.game.service.converter.EntityConverter;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +16,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class PlayerService {
-
     private final PlayerRepository playerRepository;
     private final EntityConverter entityConverter;
     private final PlayersDao playersDao;
-
 
     public PlayerService(PlayerRepository playerRepository, EntityConverter entityConverter,
                          PlayersDao playersDao) {
@@ -48,15 +42,18 @@ public class PlayerService {
     @Nullable
     public PlayerDto update(PlayerDto playerDto) {
         PlayerDto currentPlayer = get(playerDto.getId());
+
         if (currentPlayer == null) {
             return null;
         }
+
         if (playerDto.getName() == null && playerDto.getTitle() == null
                 && playerDto.getProfession() == null && playerDto.getBanned() == null
                 && playerDto.getExperience() == null && playerDto.getLevel() == null
                 && playerDto.getBirthday() == null && playerDto.getRace() == null) {
             return currentPlayer;
         }
+
         setLevelParams(playerDto);
 
         Player player = entityConverter.convertForUpdating(currentPlayer, playerDto);
@@ -70,6 +67,7 @@ public class PlayerService {
         if (playerDto.getExperience() == null) {
             return;
         }
+
         int level = (int) ((Math.sqrt(2500 + 200 * playerDto.getExperience()) - 50) / 100);
         playerDto.setLevel(level);
         int untilNextLevel = 50 * (level + 1) * (level + 2) - playerDto.getExperience();
@@ -80,22 +78,20 @@ public class PlayerService {
     public PlayerDto get(Long id) {
         Optional<Player> optionalPlayer = playerRepository.findById(id);
         Player player = optionalPlayer.orElse(null);
+
         if (player == null) {
             return null;
         }
+
         return entityConverter.convert(player);
     }
 
     public Integer getPlayersCount(PlayerFilter filter) {
         return playersDao.getPlayers(filter, true).size();
-
     }
 
     public List<PlayerDto> getPlayers(PlayerFilter filter) {
         List<Player> players = playersDao.getPlayers(filter, false);
-        List<PlayerDto> result = players.stream().map(entityConverter::convert).collect(Collectors.toList());
-
-        return result;
+        return players.stream().map(entityConverter::convert).collect(Collectors.toList());
     }
-
 }

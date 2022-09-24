@@ -11,6 +11,7 @@ import java.util.Date;
 public class RequestConverter {
     public PlayerDto convertToPlayerDto(CreatePlayerRequest createPlayerRequest) {
         PlayerDto playerDto = new PlayerDto();
+
         playerDto.setName(createPlayerRequest.getName());
         playerDto.setBirthday(new Date(createPlayerRequest.getBirthday()));
         playerDto.setBanned(createPlayerRequest.getBanned());
@@ -24,6 +25,7 @@ public class RequestConverter {
 
     public PlayerDto convertToPlayerDto(UpdatePlayerRequest updatePlayerRequest, Long id) {
         PlayerDto playerDto = new PlayerDto();
+
         playerDto.setId(id);
         playerDto.setName(updatePlayerRequest.getName());
         playerDto.setBirthday(updatePlayerRequest.getBirthday() == null ? null : new Date(updatePlayerRequest.getBirthday()));

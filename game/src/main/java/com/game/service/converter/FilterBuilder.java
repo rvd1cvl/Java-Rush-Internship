@@ -15,6 +15,7 @@ public class FilterBuilder {
                                      Integer minLevel, Integer maxLevel, PlayerOrder order, Integer pageNumber,
                                      Integer pageSize) {
         PlayerFilter filter = new PlayerFilter();
+
         filter.setName(name);
         filter.setTitle(title);
         filter.setRace(race);

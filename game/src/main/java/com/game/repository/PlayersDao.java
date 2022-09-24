@@ -2,14 +2,8 @@ package com.game.repository;
 
 import com.game.controller.filters.PlayerFilter;
 import com.game.entity.Player;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.jta.TransactionFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -35,7 +29,6 @@ public class PlayersDao {
         List<Predicate> predicates = new ArrayList<>();
 
         if (filter.getAfter() != null) {
-            //predicates.add(criteriaBuilder.gt(root.get("birthday"), filter.getAfter().getTime()));
             if (filter.getBefore() != null) {
                 predicates.add(criteriaBuilder.between(root.get("birthday"), filter.getAfter(), filter.getBefore()));
             } else {
@@ -49,7 +42,6 @@ public class PlayersDao {
 
         if (filter.getBanned() != null) {
             predicates.add(criteriaBuilder.equal(root.get("banned"), filter.getBanned()));
-
         }
 
         if (filter.getName() != null) {
@@ -102,16 +94,15 @@ public class PlayersDao {
                 break;
         }
 
-        criteriaQuery.select(root).where(predicates.stream().toArray(Predicate[]::new));
+        criteriaQuery.select(root).where(predicates.toArray(new Predicate[0]));
 
         Query query = entityManager.createQuery(criteriaQuery);
+
         if (!forCounting) {
             query.setMaxResults(filter.getPageSize());
             query.setFirstResult(filter.getPageSize() * filter.getPageNumber());
-            //query.setFirstResult(0);
         }
-        List<Player> resultList = query.getResultList();
 
-        return resultList;
+        return query.getResultList();
     }
 }

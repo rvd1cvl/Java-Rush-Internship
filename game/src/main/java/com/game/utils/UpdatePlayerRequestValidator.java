@@ -1,10 +1,6 @@
 package com.game.utils;
 
 import com.game.controller.requests.UpdatePlayerRequest;
-import com.game.controller.response.UpdatePlayerResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 
 public class UpdatePlayerRequestValidator implements Validator {
 
@@ -19,6 +15,7 @@ public class UpdatePlayerRequestValidator implements Validator {
         if (!isApplicable(o)) {
             return false;
         }
+
         if (id <= 0) {
             return false;
         }

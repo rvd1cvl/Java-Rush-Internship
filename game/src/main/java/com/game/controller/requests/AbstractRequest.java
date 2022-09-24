@@ -1,31 +1,16 @@
-package com.game.dto;
+package com.game.controller.requests;
 
 import com.game.entity.Profession;
 import com.game.entity.Race;
 
-import java.util.Date;
-
-public class PlayerDto {
-    private Long id;
+public abstract class AbstractRequest {
     private String name;
     private String title;
     private Race race;
     private Profession profession;
-    private Date birthday;
+    private Long birthday;
     private Boolean banned = false;
     private Integer experience;
-    private Integer level;
-    private Integer untilNextLevel;
-
-    public PlayerDto() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -33,22 +18,6 @@ public class PlayerDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
-
-    public Integer getUntilNextLevel() {
-        return untilNextLevel;
-    }
-
-    public void setUntilNextLevel(Integer untilNextLevel) {
-        this.untilNextLevel = untilNextLevel;
     }
 
     public String getTitle() {
@@ -75,11 +44,11 @@ public class PlayerDto {
         this.profession = profession;
     }
 
-    public Date getBirthday() {
+    public Long getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(Long birthday) {
         this.birthday = birthday;
     }
 
@@ -101,17 +70,14 @@ public class PlayerDto {
 
     @Override
     public String toString() {
-        return "PlayerDto{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+        return "AbstractRequest{" +
+                "name='" + name + '\'' +
                 ", title='" + title + '\'' +
                 ", race=" + race +
                 ", profession=" + profession +
                 ", birthday=" + birthday +
                 ", banned=" + banned +
                 ", experience=" + experience +
-                ", level=" + level +
-                ", untilNextLevel=" + untilNextLevel +
                 '}';
     }
 }
