@@ -1,8 +1,5 @@
 package com.game.config;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +15,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -32,18 +27,6 @@ import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.
 @EnableJpaRepositories(basePackages = "com.game.repository")
 public class AppConfig {
 
-//    @Bean("customFactory")
-//    public SessionFactory createSessionFactory(LocalContainerEntityManagerFactoryBean
-//                                                       localContainerEntityManagerFactoryBean) {
-//        EntityManager entityManager = localContainerEntityManagerFactoryBean.getNativeEntityManagerFactory().
-//                createEntityManager();
-//
-//        Session session = entityManager.unwrap(org.hibernate.Session.class);
-//        SessionFactory factory = session.getSessionFactory();
-//
-//        return factory;
-//    }
-
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -53,28 +36,18 @@ public class AppConfig {
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(additionalProperties());
+
         return em;
     }
-
-//    @Profile("prod")
-//    @Bean
-//    public DataSource dataSource() {
-//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-//        dataSource.setUrl("jdbc:mysql://localhost:3306/rpg?serverTimezone=UTC&characterEncoding=UTF-8");
-//        dataSource.setUsername("root");
-//        dataSource.setPassword("root");
-//        return dataSource;
-//    }
 
     @Profile("prod")
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/hibernate_demo_DB");
-        dataSource.setUsername("postgres");
-        dataSource.setPassword("postgres");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/rpg?serverTimezone=UTC&characterEncoding=UTF-8");
+        dataSource.setUsername("root");
+        dataSource.setPassword("root");
         return dataSource;
     }
 
@@ -92,7 +65,7 @@ public class AppConfig {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager (EntityManagerFactory emf) {
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(emf);
 
@@ -104,17 +77,9 @@ public class AppConfig {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 
-//    private Properties additionalProperties() {
-//        Properties properties = new Properties();
-//        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-//
-//        return properties;
-//    }
-
     private Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        properties.setProperty("hibernate.flushMode", "always");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 
         return properties;
     }
